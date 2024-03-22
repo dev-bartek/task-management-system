@@ -3,6 +3,7 @@
 namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
+use App\Enums\UserTypes;
 use Filament\Models\Contracts\FilamentUser;
 use Filament\Panel;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -41,17 +42,20 @@ class User extends Authenticatable implements FilamentUser
      */
     protected function casts(): array
     {
-        // TODO: create UserType enum and add a cast in here
         return [
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
+            'type' => UserTypes::class
         ];
     }
 
     public function canAccessPanel(Panel $panel): bool
     {
-        // return $this->isAdmin();
+        return $this->isAdmin();
     }
 
-    // TODO: implement isAdmin method to check if User is admin
+    public function isAdmin(): bool
+    {
+        return $this->type === UserTypes::Admin;
+    }
 }
