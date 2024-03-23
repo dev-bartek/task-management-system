@@ -3,6 +3,8 @@
 namespace Database\Seeders;
 
 use App\Enums\UserType;
+use App\Models\Status;
+use App\Models\task;
 use App\Models\User;
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
@@ -14,12 +16,17 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        // User::factory(10)->create();
+        $admin = User::factory()
+            ->create([
+                'name' => 'Admin User',
+                'email' => 'admin@task-management-system.test',
+                'type' => UserType::Admin->value,
+            ]);
 
-        User::factory()->create([
-            'name' => 'Admin User',
-            'email' => 'admin@task-management-system.test',
-            'type' => UserType::Admin->value,
-        ]);
+        Task::factory()
+            ->count(3)
+            ->for($admin)
+            ->has(Status::factory()->create())
+            ->create();
     }
 }
