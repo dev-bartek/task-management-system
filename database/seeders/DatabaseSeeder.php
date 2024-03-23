@@ -2,7 +2,7 @@
 
 namespace Database\Seeders;
 
-use App\Enums\UserTypes;
+use App\Enums\UserType;
 use App\Models\User;
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
@@ -19,7 +19,7 @@ class DatabaseSeeder extends Seeder
         User::factory()->create([
             'name' => 'Admin User',
             'email' => 'admin@task-management-system.test',
-            'type' => UserTypes::Admin->value,
+            'type' => UserType::Admin->value,
         ]);
     }
 }

@@ -4,7 +4,7 @@ namespace App\Enums;
 
 use App\Enums\Traits\EnumToArray;
 
-enum UserTypes: string
+enum UserType: string
 {
     use EnumToArray;
     case Admin = 'admin';
