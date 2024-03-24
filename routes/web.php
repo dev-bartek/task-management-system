@@ -2,14 +2,15 @@
 
 use Illuminate\Support\Facades\Route;
 
-Route::redirect('/', '/login');
+Route::redirect('/', '/tasks');
 
-Route::view('tasks', 'tasks')
-    ->middleware(['auth', 'verified'])
-    ->name('tasks');
+Route::group(['middleware' => 'auth'], function () {
+    Route::view('tasks', 'tasks')
+        ->middleware(['verified'])
+        ->name('tasks');
 
-Route::view('profile', 'profile')
-    ->middleware(['auth'])
-    ->name('profile');
+    Route::view('profile', 'profile')
+        ->name('profile');
+});
 
 require __DIR__.'/auth.php';
