@@ -10,7 +10,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-class task extends Model
+class Task extends Model
 {
     use HasFactory, SoftDeletes;
 
@@ -39,5 +39,15 @@ class task extends Model
     public function status(): HasOne
     {
         return $this->hasOne(Status::class);
+    }
+
+    public function complete(): void
+    {
+        $this->completed_at = now();
+    }
+
+    public function isCompleted(): bool
+    {
+        return !is_null($this->completed_at);
     }
 }
