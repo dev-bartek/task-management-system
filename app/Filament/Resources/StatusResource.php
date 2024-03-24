@@ -17,7 +17,7 @@ class StatusResource extends Resource
 {
     protected static ?string $model = Status::class;
 
-    protected static ?string $navigationGroup = 'Tasks';
+    protected static ?string $navigationGroup = 'Manage Tasks';
 
     protected static ?string $navigationLabel = 'Task Statuses';
 
