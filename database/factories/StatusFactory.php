@@ -9,7 +9,7 @@ class StatusFactory extends Factory
 {
     public function definition(): array
     {
-        $statusName = fake()->words(2);
+        $statusName = fake()->sentence(2);
 
         return [
             'name' => $statusName,

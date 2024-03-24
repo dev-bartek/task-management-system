@@ -10,10 +10,10 @@ class TaskFactory extends Factory
     public function definition(): array
     {
         return [
-            'title' => fake()->text(),
-            'description' => fake()->paragraph(),
+            'title' => fake()->sentence(3),
+            'description' => fake()->paragraph(1),
             'due_at' => now()->addDays(rand(1, 5)),
-            'priority' => array_rand(TaskPriority::values()),
+            'priority' => fake()->randomElement(TaskPriority::values()),
         ];
     }
 
