@@ -26,7 +26,8 @@ class DatabaseSeeder extends Seeder
         Task::factory()
             ->count(3)
             ->for($admin)
-            ->has(Status::factory()->create())
-            ->create();
+            ->create([
+                'status_id' => Status::factory()->create()->getKey()
+            ]);
     }
 }
