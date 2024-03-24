@@ -33,6 +33,11 @@ new class extends Component
                     <x-nav-link :href="route('tasks')" :active="request()->routeIs('tasks')" wire:navigate>
                         {{ __('Tasks') }}
                     </x-nav-link>
+                    @if (auth()->user()->isAdmin())
+                        <x-nav-link :href="url('/admin/users')">
+                            {{ __('Admin') }}
+                        </x-nav-link>
+                    @endif
                 </div>
             </div>
 
@@ -84,6 +89,11 @@ new class extends Component
             <x-responsive-nav-link :href="route('tasks')" :active="request()->routeIs('tasks')" wire:navigate>
                 {{ __('Tasks') }}
             </x-responsive-nav-link>
+            @if (auth()->user()->isAdmin())
+                <x-responsive-nav-link :href="url('admin/users/')">
+                    {{ __('Admin') }}
+                </x-responsive-nav-link>
+            @endif
         </div>
 
         <!-- Responsive Settings Options -->
