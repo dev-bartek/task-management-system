@@ -6,8 +6,6 @@ use App\Enums\TaskPriority;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Illuminate\Database\Eloquent\Relations\HasMany;
-use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Task extends Model
@@ -26,8 +24,8 @@ class Task extends Model
     {
         return [
             'priority' => TaskPriority::class,
-            'due_at' => 'datetime',
-            'completed_at' => 'datetime',
+            'due_at' => 'date',
+            'completed_at' => 'date',
         ];
     }
 
@@ -36,18 +34,19 @@ class Task extends Model
         return $this->belongsTo(User::class);
     }
 
-    public function status(): HasOne
+    public function status(): BelongsTo
     {
-        return $this->hasOne(Status::class);
+        return $this->belongsTo(Status::class);
     }
 
     public function complete(): void
     {
         $this->completed_at = now();
+        $this->save();
     }
 
     public function isCompleted(): bool
     {
-        return !is_null($this->completed_at);
+        return ! is_null($this->completed_at);
     }
 }
