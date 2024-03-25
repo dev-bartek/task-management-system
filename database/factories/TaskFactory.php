@@ -23,6 +23,4 @@ class TaskFactory extends Factory
             'completed_at' => now(),
         ]);
     }
-
-
 }
