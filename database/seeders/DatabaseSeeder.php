@@ -22,11 +22,10 @@ class DatabaseSeeder extends Seeder
             ['name' => 'Awaits information'],
         ]);
 
-        $admin = User::factory()
+        $admin = User::factory()->admin()
             ->create([
                 'name' => 'Admin User',
                 'email' => 'admin@tms.test',
-                'type' => UserType::Admin->value,
                 //password is password
             ]);
 
@@ -43,7 +42,6 @@ class DatabaseSeeder extends Seeder
             ->create([
                 'name' => 'Normal User',
                 'email' => 'user@tms.test',
-                'type' => UserType::User->value,
             ]);
 
         Task::factory()
