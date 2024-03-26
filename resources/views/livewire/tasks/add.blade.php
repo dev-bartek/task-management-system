@@ -16,17 +16,17 @@ new class extends Component
     public ?string $description = null;
     public array $taskPriorityOptions;
     public string $priority;
-    public $due_at = null;
-    public $status;
-    public $statusOptions;
+    public ?string $due_at = null;
+    public ?int $status = null;
+    public array $statusOptions;
 
-    public function mount()
+    public function mount(): void
     {
         $this->taskPriorityOptions = array_combine(TaskPriority::values(), TaskPriority::names());
-        $this->statusOptions = Status::all()->pluck('name')->toArray();
+        $this->statusOptions = Status::all()->pluck('name', 'id')->toArray();
     }
 
-    public function addTask()
+    public function addTask(): void
     {
         $user = Auth::user();
         $this->authorize('create', Task::class);
@@ -41,7 +41,15 @@ new class extends Component
 
         $task = (new Task)->fill($validated);
         $task->user()->associate($user);
+
+        if (! is_null($this->status)) {
+            $status = Status::findOrFail($this->status);
+            $task->status()->associate($status);
+        }
+
         $task->save();
+
+        $this->reset('title', 'description', 'priority', 'due_at', 'status');
 
         $this->dispatch('task-created');
         $this->dispatch('close-modal', 'add-task');
@@ -126,7 +134,7 @@ new class extends Component
                     :elementOptions="$statusOptions"
                 />
 
-                <x-input-error :messages="$errors->get('priority')" class="mt-2" />
+                <x-input-error :messages="$errors->get('status')" class="mt-2" />
             </div>
 
             <div class="mt-6 flex justify-end">
