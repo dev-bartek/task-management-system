@@ -16,7 +16,7 @@ class EditUser extends EditRecord
     {
         return [
             DeleteAction::make()
-                ->hidden(User::where('type', UserType::Admin)->count() === 1),
+                ->hidden(fn ($record) => $record->isAdmin() && User::where('type', UserType::Admin)->count() === 1),
         ];
     }
 }

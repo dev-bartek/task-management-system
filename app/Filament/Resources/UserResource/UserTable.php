@@ -40,7 +40,7 @@ class UserTable
                     ->iconButton(),
                 DeleteAction::make()
                     ->iconButton()
-                    ->hidden(User::where('type', UserType::Admin)->count() === 1),
+                    ->hidden(fn ($record) => $record->isAdmin() && User::where('type', UserType::Admin)->count() === 1),
             ])
             ->bulkActions([
                 BulkActionGroup::make([
