@@ -2,7 +2,6 @@
 
 namespace Database\Seeders;
 
-use App\Enums\UserType;
 use App\Models\Status;
 use App\Models\task;
 use App\Models\User;
