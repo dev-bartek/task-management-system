@@ -1,15 +1,12 @@
 <?php
 
-use App\Models\User;
 use App\Models\Task;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Session;
-use Illuminate\Validation\Rule;
 use Livewire\Volt\Component;
 use Livewire\WithPagination;
 
-new class extends Component
-{
+new class extends Component {
     use WithPagination;
 
     protected $listeners = [
@@ -24,21 +21,13 @@ new class extends Component
         $user = Auth::user();
 
         $tasks = Task::where('user_id', $user->getKey())
-            ->orderBy('created_at', 'desc')
-            ->whereNull('completed_at');
-
-        $tasksDone = Task::where('user_id', $user->getKey())
-            ->orderBy('created_at', 'desc')
-            ->whereNotNull('completed_at');
+            ->orderBy('created_at', 'desc');
 
         if ($tasks->count() <= 10) {
             $this->resetPage();
         }
 
-        return [
-            'tasks' => $tasks->paginate(10),
-            'tasksDone' => $tasksDone->paginate(10),
-        ];
+        return ['tasks' => $tasks->paginate(10)];
     }
 }
 ?>
@@ -49,19 +38,7 @@ new class extends Component
         <livewire:tasks.add/>
         <ul>
             @foreach($tasks as $task)
-{{--                <livewire:tasks.task :task="$task" :key="$task->getKey()" wire:ignore/>--}}
-                <livewire:tasks.task :task="$task"/>
-            @endforeach
-        </ul>
-        @if($tasksDone->total())
-        <h2 class="font-semibold text-xl text-gray-800 leading-tight mt-10">
-            {{ __('Tasks Completed') }}
-        </h2>
-        <hr>
-        @endif
-        <ul>
-            @foreach($tasksDone as $taskDone)
-                <livewire:tasks.task :task="$taskDone"/>
+                <livewire:tasks.task :task="$task" :key="$task->getKey()"/>
             @endforeach
         </ul>
     </div>
