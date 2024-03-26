@@ -6,7 +6,6 @@ Route::redirect('/', '/tasks');
 
 Route::group(['middleware' => 'auth'], function () {
     Route::view('tasks', 'tasks')
-        ->middleware(['verified'])
         ->name('tasks');
 
     Route::view('profile', 'profile')
