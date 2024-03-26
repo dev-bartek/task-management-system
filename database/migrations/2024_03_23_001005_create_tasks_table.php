@@ -18,7 +18,7 @@ return new class extends Migration
             $table->foreignId('status_id')
                 ->nullable()
                 ->constrained()
-                ->cascadeOnUpdate();
+                ->onDelete('set null');
             $table->string('title', 255);
             $table->string('description', 1000)
                 ->nullable();
