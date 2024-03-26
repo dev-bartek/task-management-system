@@ -3,6 +3,7 @@
 namespace App\Filament\Resources\UserResource;
 
 use App\Enums\UserType;
+use App\Models\User;
 use Filament\Tables\Actions\BulkActionGroup;
 use Filament\Tables\Actions\DeleteAction;
 use Filament\Tables\Actions\DeleteBulkAction;
@@ -38,7 +39,8 @@ class UserTable
                 EditAction::make()
                     ->iconButton(),
                 DeleteAction::make()
-                    ->iconButton(),
+                    ->iconButton()
+                    ->hidden(User::where('type', UserType::Admin)->count() === 1),
             ])
             ->bulkActions([
                 BulkActionGroup::make([
