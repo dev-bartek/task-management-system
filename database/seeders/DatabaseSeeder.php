@@ -7,7 +7,6 @@ use App\Models\Status;
 use App\Models\task;
 use App\Models\User;
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
-use Illuminate\Database\Eloquent\Factories\Sequence;
 use Illuminate\Database\Seeder;
 
 class DatabaseSeeder extends Seeder
