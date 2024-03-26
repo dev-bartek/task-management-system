@@ -20,7 +20,7 @@ new class extends Component {
         $user = Auth::user();
 
         $tasks = Task::where('user_id', $user->getKey())
-            ->orderByRaw('ISNULL(completed_at) DESC')->orderBy('created_at', 'desc');
+            ->orderByRaw('completed_at IS NULL DESC, completed_at DESC')->orderBy('created_at', 'desc');
 
         if ($tasks->count() >= 10) {
             $this->resetPage();
