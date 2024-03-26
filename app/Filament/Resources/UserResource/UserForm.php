@@ -42,6 +42,7 @@ class UserForm
                 Section::make()
                     ->schema([
                         Select::make('type')
+                            ->required()
                             ->options(
                                 array_combine(
                                     UserType::values(),
