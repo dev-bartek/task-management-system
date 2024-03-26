@@ -23,7 +23,7 @@ new class extends Component
         $this->task = $task;
         $this->title = $task->title;
         $this->description = $task->description;
-        $this->due_at = $task->due_at->format('Y-m-d');
+        $this->due_at = $task->due_at?->format('Y-m-d');
         $this->priority = $task->priority->value;
 
         $this->taskPriorityOptions = array_combine(TaskPriority::values(), TaskPriority::names());
