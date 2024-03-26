@@ -9,11 +9,8 @@ class StatusFactory extends Factory
 {
     public function definition(): array
     {
-        $statusName = fake()->sentence(2);
-
         return [
-            'name' => $statusName,
-            'slug' => Str::slug($statusName),
+            'name' => fake()->sentence(2),
         ];
     }
 }
