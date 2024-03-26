@@ -6,7 +6,7 @@ use App\Enums\Traits\EnumToArray;
 use Filament\Support\Contracts\HasColor;
 use Filament\Support\Contracts\HasLabel;
 
-enum TaskPriority: string implements HasLabel, HasColor
+enum TaskPriority: string implements HasColor, HasLabel
 {
     use EnumToArray;
 
