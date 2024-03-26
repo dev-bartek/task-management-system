@@ -91,6 +91,8 @@ When task is marked as complete following actions are performed:
 - completed task are send to end of the list by using custom orderBy query in component
 - the edit and complete buttons are no longer shown to the user.
 - email is sent to the user to indicate task completion.
+- For the purpose of testing by default email will land in `laravel.log` file.
+- You are welcome to set it to your choice of email provider by adjusting smtp settings in env config.
 
 ## Installation
 - clone the repo to your local environment.
