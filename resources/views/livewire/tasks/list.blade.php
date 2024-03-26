@@ -2,7 +2,6 @@
 
 use App\Models\Task;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Session;
 use Livewire\Volt\Component;
 use Livewire\WithPagination;
 

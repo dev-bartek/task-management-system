@@ -2,18 +2,17 @@
 
 namespace App\Filament\Resources;
 
-use App\Filament\Resources\TaskResource\Pages;
-use App\Filament\Resources\TaskResource\RelationManagers;
+use App\Filament\Resources\TaskResource\Pages\CreateTask;
+use App\Filament\Resources\TaskResource\Pages\EditTask;
+use App\Filament\Resources\TaskResource\Pages\ListTasks;
+use App\Filament\Resources\TaskResource\TaskForm;
+use App\Filament\Resources\TaskResource\TaskInfolist;
+use App\Filament\Resources\TaskResource\TaskTable;
 use App\Models\Task;
-use Filament\Forms;
 use Filament\Forms\Form;
+use Filament\Infolists\InfoList;
 use Filament\Resources\Resource;
-use Filament\Tables;
-use Filament\Tables\Columns\IconColumn;
-use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
-use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\SoftDeletingScope;
 
 class TaskResource extends Resource
 {
@@ -21,54 +20,27 @@ class TaskResource extends Resource
 
     protected static ?string $navigationGroup = 'Manage Tasks';
 
+    public static function infolist(Infolist $infolist): Infolist
+    {
+        return TaskInfolist::make($infolist);
+    }
+
     public static function form(Form $form): Form
     {
-        return $form
-            ->schema([
-                //
-            ]);
+        return TaskForm::make($form);
     }
 
     public static function table(Table $table): Table
     {
-        return $table
-            ->columns([
-                TextColumn::make('title')
-                    ->searchable(),
-                TextColumn::make('due_at')
-                    ->label('Task Due')
-                    ->sortable()
-                    ->date('d-m-Y'),
-                IconColumn::make('completed')
-                    ->state(fn (Task $record) => $record->isCompleted())
-                    ->boolean(),
-            ])
-            ->filters([
-                //
-            ])
-            ->actions([
-                Tables\Actions\EditAction::make(),
-            ])
-            ->bulkActions([
-                Tables\Actions\BulkActionGroup::make([
-                    Tables\Actions\DeleteBulkAction::make(),
-                ]),
-            ]);
-    }
-
-    public static function getRelations(): array
-    {
-        return [
-            //
-        ];
+        return TaskTable::make($table);
     }
 
     public static function getPages(): array
     {
         return [
-            'index' => Pages\ListTasks::route('/'),
-            'create' => Pages\CreateTask::route('/create'),
-            'edit' => Pages\EditTask::route('/{record}/edit'),
+            'index' => ListTasks::route('/'),
+            'create' => CreateTask::route('/create'),
+            'edit' => EditTask::route('/{record}/edit'),
         ];
     }
 }
