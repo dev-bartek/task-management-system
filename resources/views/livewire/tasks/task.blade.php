@@ -1,10 +1,8 @@
 <?php
 
-use App\Models\User;
 use App\Models\Task;
+use App\Events\TaskCompleted;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Session;
-use Illuminate\Validation\Rule;
 use Livewire\Volt\Component;
 
 new class extends Component
@@ -17,9 +15,13 @@ new class extends Component
 
     public function completeTask():void
     {
+        $this->authorize('update', Auth::user());
+
         $this->task->complete();
 
         $this->dispatch('task-completed');
+
+        event(new TaskCompleted($this->task));
     }
 
     public function deleteTask():void
