@@ -14,6 +14,8 @@ new class extends Component
 
     protected $listeners = [
         'task-created' => '$refresh',
+        'task-completed' => '$refresh',
+        'task-updated' => '$refresh',
         'task-deleted' => '$refresh',
     ];
 
@@ -21,7 +23,13 @@ new class extends Component
     {
         $user = Auth::user();
 
-        $tasks = Task::where('user_id', $user->getKey());
+        $tasks = Task::where('user_id', $user->getKey())
+            ->orderBy('created_at', 'desc')
+            ->whereNull('completed_at');
+
+        $tasksDone = Task::where('user_id', $user->getKey())
+            ->orderBy('created_at', 'desc')
+            ->whereNotNull('completed_at');
 
         if ($tasks->count() <= 10) {
             $this->resetPage();
@@ -29,6 +37,7 @@ new class extends Component
 
         return [
             'tasks' => $tasks->paginate(10),
+            'tasksDone' => $tasksDone->paginate(10),
         ];
     }
 }
@@ -40,11 +49,25 @@ new class extends Component
         <livewire:tasks.add/>
         <ul>
             @foreach($tasks as $task)
-                <livewire:tasks.task :task="$task" :key="$task->getKey()"/>
+{{--                <livewire:tasks.task :task="$task" :key="$task->getKey()" wire:ignore/>--}}
+                <livewire:tasks.task :task="$task"/>
+            @endforeach
+        </ul>
+        @if($tasksDone->total())
+        <h2 class="font-semibold text-xl text-gray-800 leading-tight mt-10">
+            {{ __('Tasks Completed') }}
+        </h2>
+        <hr>
+        @endif
+        <ul>
+            @foreach($tasksDone as $taskDone)
+                <livewire:tasks.task :task="$taskDone"/>
             @endforeach
         </ul>
     </div>
-    <div class="p-5 border-t">
-        {{ $tasks->links() }}
-    </div>
+    @if($tasks->total() > 1)
+        <div class="p-5 border-t">
+            {{ $tasks->links() }}
+        </div>
+    @endif
 </div>
