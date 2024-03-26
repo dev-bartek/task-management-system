@@ -21,9 +21,9 @@ new class extends Component {
         $user = Auth::user();
 
         $tasks = Task::where('user_id', $user->getKey())
-            ->orderBy('created_at', 'desc');
+            ->orderByRaw('ISNULL(completed_at) DESC')->orderBy('created_at', 'desc');
 
-        if ($tasks->count() <= 10) {
+        if ($tasks->count() >= 10) {
             $this->resetPage();
         }
 
@@ -31,7 +31,6 @@ new class extends Component {
     }
 }
 ?>
-
 
 <div>
     <div class="p-5">
@@ -42,9 +41,7 @@ new class extends Component {
             @endforeach
         </ul>
     </div>
-    @if($tasks->total() > 1)
-        <div class="p-5 border-t">
-            {{ $tasks->links() }}
-        </div>
-    @endif
+    <div class="p-5 border-t">
+        {{ $tasks->links() }}
+    </div>
 </div>
