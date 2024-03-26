@@ -25,6 +25,7 @@ new class extends Component
         $this->description = $task->description;
         $this->due_at = $task->due_at?->format('Y-m-d');
         $this->priority = $task->priority->value;
+        $this->status = $task->status?->getKey();
 
         $this->taskPriorityOptions = array_combine(TaskPriority::values(), TaskPriority::names());
         $this->statusOptions = Status::all()->pluck('name', 'id')->toArray();
@@ -42,6 +43,13 @@ new class extends Component
             'status' => [Rule::exists('statuses', 'id'), 'nullable'],
         ]);
 
+        if (empty($this->status)) {
+            $this->task->status()->dissociate();
+        } else {
+            $status = Status::find($this->status);
+            $this->task->status()->associate($status);
+        }
+
         $this->task->update([
             'title' => $this->title,
             'description' => $this->description,
@@ -49,19 +57,14 @@ new class extends Component
             'priority' => $this->priority,
         ]);
 
-        if (! is_null($this->status)) {
-            $status = Status::findOrFail($this->status);
-            $this->task->status()->associate($status);
-        }
-
         $this->dispatch('task-updated');
-        $this->dispatch('close-modal', 'update-task');
+        $this->dispatch('close-modal', 'update-task-' . $this->task->getKey());
     }
 }
 ?>
 
 <div>
-    <x-modal name="update-task" :show="$errors->isNotEmpty()" focusable>
+    <x-modal name="update-task-{{$this->task->id}}" :show="$errors->isNotEmpty()" focusable>
         <form wire:submit="updateTask" class="p-6">
             <div>
                 <x-input-label for="title" value="{{ __('Title') }}" />
